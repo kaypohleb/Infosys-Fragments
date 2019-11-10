@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">FragmentDemo1</string>
+
+    <!-- Placeholder text for this example. -->
+    <string name="title1">Hyundai 6000</string>
+    <string name="carDes1">The Hyundai Santa Fe is a sport utility vehicle (SUV) produced by the
+        South Korean manufacturer Hyundai since 2000.The Santa Fe was a milestone in the companys
+        restructuring program of the late 1990s because the SUV was a hit with American buyers.
+        The SUV was so popular that at times, Hyundai had trouble supplying the demand. The second
+        generation Hyundai Santa Fe was awarded 2008 Consumer Reports top pick and was among the
+        top 10 vehicles for 2008 unveiled in the magazines issue.The magazines annual ratings,
+        based on road tests and predicted safety and reliability, are considered highly influential
+        among consumers.</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="imageDes">carView</string>
+    <!-- Text for the fragment. -->
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="yes_message">ARTICLE: Like</string>
+    <string name="no_message">ARTICLE: Thanks</string>
+    <string name="question_car">LIKE THE CAR?</string>
+
+    <string name="button_car">Open</string>
+    <string name="button_carClose">Close</string>
+    <string name="rating_message">Rate the car</string>
+    <!-- Text for the exception message in FragmentCommunicate. -->
+    <string name="exception_message">must implement OnFragmentInteractionListener</string>
+</resources>
