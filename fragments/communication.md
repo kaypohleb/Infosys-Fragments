@@ -94,7 +94,15 @@ Fragment lifecycle is similar to Activity lifecycle
 * Initialize Fragment components and variables \(preserved if the Fragment is paused and resumed\)
 * Always include `super.onCreate(savedInstanceState)` in lifecycle callbacks
 
-|  |  |
+
+
+**@Override** [**`onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)`**](https://developer.android.com/reference/android/app/Fragment.html#onCreateView%28android.view.LayoutInflater,%20android.view.ViewGroup,%20android.os.Bundle%29)**:**
+
+* Inflate XML layout—required if Fragment has a UI
+* System calls this method to make Fragment visible 
+* Must return the root [`View`](https://developer.android.com/reference/android/view/View.html) of Fragment layout or null if the Fragment does not have a UI
+
+| More Callbacks |  |
 | :--- | :--- |
 | \`\`[**`onAttach()`**](https://developer.android.com/reference/android/app/Fragment.html#onAttach%28android.content.Context%29)\`\` | Called when Fragment is first attached to Activity |
 | \`\`[**`onPause()`**](https://developer.android.com/reference/android/app/Fragment.html#onPause%28%29) | Called when Activity is paused |
@@ -103,4 +111,29 @@ Fragment lifecycle is similar to Activity lifecycle
 | \`\`[**`onDestroyView()`**](https://developer.android.com/reference/android/app/Fragment.html#onDestroyView%28%29)\`\` | Called when View previously created by `onCreateView()` is detached from Fragment |
 
 
+
+[**`onActivityCreated()`**](https://developer.android.com/reference/android/app/Fragment.html#onActivityCreated%28android.os.Bundle%29)**:** Called when the Activity onCreate\(\) method has returned 
+
+* Called after [`onCreateView()`](https://developer.android.com/reference/android/app/Fragment.html#onCreateView%28android.view.LayoutInflater,%20android.view.ViewGroup,%20android.os.Bundle%29) and before [`onViewStateRestored()`](https://developer.android.com/reference/android/app/Fragment.html#onViewStateRestored%28android.os.Bundle%29)\`\`
+* Retrieve views or restore state
+* Use [`setRetainInstance()`](https://developer.android.com/reference/android/app/Fragment.html#setRetainInstance%28boolean%29) to keep Fragment instance when Activity is recreated
+
+Use [`onDestroyView()`](https://developer.android.com/reference/android/app/Fragment.html#onDestroyView%28%29) to perform action after Fragment is no longer visible
+
+* Called after[`onStop()`](https://developer.android.com/reference/android/app/Fragment.html#onStop%28%29) and before [`onDestroy()`](https://developer.android.com/reference/android/app/Fragment.html#onDestroy%28%29)\`\`
+* View that was created in `onCreateView()` is destroyed
+* A new View is created next time Fragment needs to be displayed
+
+### Activity Context
+
+When Fragment is active or resumed:
+
+* Use [`getActivity()`](https://developer.android.com/reference/android/app/Fragment.html#getActivity%28%29) to get the[`Activity`](https://developer.android.com/reference/android/app/Activity.html) that started the fragment
+* Find a View in the Activity layout:
+
+```java
+View listView = getActivity().findViewById(R.id.list);
+```
+
+**Get Fragment by calling** [**findFragmentById\(\)**](https://developer.android.com/reference/android/app/FragmentManager.html#findFragmentById%28int%29) **on  FragmentManager:**
 
