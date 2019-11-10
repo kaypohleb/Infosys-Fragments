@@ -135,5 +135,25 @@ When Fragment is active or resumed:
 View listView = getActivity().findViewById(R.id.list);
 ```
 
-**Get Fragment by calling** [**findFragmentById\(\)**](https://developer.android.com/reference/android/app/FragmentManager.html#findFragmentById%28int%29) **on  FragmentManager:**
+Get Fragment by calling [`findFragmentById()`](https://developer.android.com/reference/android/app/FragmentManager.html#findFragmentById%28int%29) on  `FragmentManager`:
+
+```java
+ExampleFragment fragment = (ExampleFragment)
+     getFragmentManager().findFragmentById(R.id.example_fragment);
+// ...
+mData = fragment.getSomeData();
+```
+
+Add Fragment to back stack: [`addToBackStack(null)`](https://developer.android.com/reference/android/app/FragmentTransaction.html#addToBackStack%28java.lang.String%29)\`\`
+
+* Host `Activity` maintains back stack even after `Fragment` is removed
+* Allows navigation with Back button
+
+```java
+fragmentTransaction.add(R.id.fragment_container, fragment);
+fragmentTransaction.addToBackStack(null);
+fragmentTransaction.commit();
+```
+
+
 
