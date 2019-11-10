@@ -99,3 +99,50 @@ Now that we have our `fragment`, let's add it in `activity_main.xml` to make it 
     tools:layout="@layout/fragment_simple" />
 ```
 
+Great! Now we can move on to interactions for the fragment.
+
+### Adding Interactions for Fragment
+
+In our `SimpleFragment` class, we need to add actions for our `RadioButtons` that we added in the `xml` file earlier.
+
+```java
+ private static final int YES = 0;
+    private static final int NO = 1;
+
+    public SimpleFragment() {
+        // Required empty public constructor
+    }
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment.
+        final View rootView =
+                inflater.inflate(R.layout.fragment_simple, container, false);
+        final RadioGroup radioGroup = rootView.findViewById(R.id.radio_group);
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                View radioButton = radioGroup.findViewById(checkedId);
+                int index = radioGroup.indexOfChild(radioButton);
+                TextView textView =
+                        rootView.findViewById(R.id.fragment_header);
+                switch (index) {
+                    case YES: // User chose "Yes."
+                        textView.setText(R.string.yes_message);
+                        break;
+                    case NO: // User chose "No."
+                        textView.setText(R.string.no_message);
+                        break;
+                    default: // No choice made.
+                        // Do nothing.
+                        break;
+                }
+            }
+        });
+        // Return the View for the fragment's UI.
+        return rootView;
+```
+
