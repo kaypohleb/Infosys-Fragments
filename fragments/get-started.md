@@ -85,9 +85,9 @@ Open `fragment_simple.xml`. In the layout editor pane, click **Text** to view th
 
 Here, we are adding multiple `RadioButton` as a `RadioGroup` to our application so we can switch between states later in our main activity listeners
 
-Now that we have our `fragment`, let's put it in `activity_main.xml` to make it be seen.
+Now that we have our `fragment`, let's add it in `activity_main.xml` to make it be seen.
 
-```text
+```markup
 <fragment
     android:id="@+id/fragment"
     android:name="com.example.fragmentdemo1.SimpleFragment"

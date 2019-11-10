@@ -8,5 +8,9 @@ The [FragmentExample1](https://github.com/google-developer-training/android-adva
 
 The `Fragment` is skeletal, but it demonstrates how to create a `Fragment` to use in multiple places in your app's UI.
 
-Put in Image here
+1. Statically adding `Fragment`
+
+![](../.gitbook/assets/image%20%284%29.png)
+
+
 
