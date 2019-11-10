@@ -8,18 +8,20 @@ All Fragment-to-Fragment communication is done through host Activity
 
 ![](https://lh4.googleusercontent.com/Bl0CzdHnkEEGiNjopgyifIWnkVjIQ69nv-6Mq1h56nfg01UEQoEMGzcG_3S-s7uhFUlWlDwQL-FD0dTeZJeqwqeQaOPnEDNvJWD_-BMGP6-uEYGQkYmvZMTb7PKif8VPeWTe8sJz1xk)
 
-Add a third state for the `RadioButton` if neither is selected
+### `RatingFragment`Setup
+
+Add a  `String`variable and `float` value, we will be using this to place inside the `Bundle`
 
 ```java
-private static final int NONE = 2;
-public int mRadioButtonChoice = NONE;
+private static final String CHOICE="choice";
+public float choice;
 ```
 
  Define a listener interface called `OnFragmentInteractionListener`. In it, specify a callback method that you will create, called `onRadioButtonChoice()`:
 
 ```java
 interface OnFragmentInteractionListener {
-    void onRadioButtonChoice(int choice);
+    void onRatingChoice(int choice);
 }
 ```
 
@@ -50,53 +52,111 @@ The `onAttach()` method is called as soon as the `Fragment` is associated with t
 The string resource `exception_message` is included in the **source code** for the text `"must implement OnFragmentInteractionListener"`
 {% endhint %}
 
- In `onCreateView()`, get the `mRadioButtonChoice` by adding code to each `case` of the `switch case` block for the radio buttons.
+
+
+Overall, your class should end up looking like this.
 
 ```java
-case YES: // User chose "Yes."
-    textView.setText(R.string.yes_message);
-    mRadioButtonChoice = YES;
-    mListener.onRadioButtonChoice(YES);
-    break;
-case NO: // User chose "No."
-    textView.setText(R.string.no_message);
-    mRadioButtonChoice = NO;
-    mListener.onRadioButtonChoice(NO);
-    break;
-default: // No choice made.
-    mRadioButtonChoice = NONE;
-    mListener.onRadioButtonChoice(NONE);
-    break;
+public class RatingFragment extends Fragment {
+    private static final String CHOICE="choice";
+    public float choice;
+    OnFragmentInteractionListener mListener;
+
+    interface OnFragmentInteractionListener {
+        void onRatingChoice(float choice);
+    }
+
+    public RatingFragment() {
+        // Required empty public constructor
+
+    }
+
+    public static RatingFragment newInstance(float choice) {
+        RatingFragment fragment = new RatingFragment();
+        Bundle arguments = new Bundle();
+        arguments.putFloat(CHOICE, choice);
+        fragment.setArguments(arguments);
+        return fragment;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        final View rootView = inflater.inflate(R.layout.fragment_rating, container, false);
+        final RatingBar rB = rootView.findViewById(R.id.ratingBar);
+        if (getArguments().containsKey(CHOICE)) {
+            // A choice was made, so get the choice.
+            choice = getArguments().getFloat(CHOICE);
+            // Check the radio button choice.
+            if (choice!=0) {
+                rB.setRating(choice);
+            }
+        }
+
+        rB.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+                String s = getString(R.string.rating_message);
+                choice = v;
+                mListener.onRatingChoice(v);
+                //Toast.makeText(getActivity().getApplicationContext(),s+ " "+ v,Toast.LENGTH_SHORT).show();
+            }
+        });
+        return rootView;
+    }
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new ClassCastException(context.toString()
+                    + getResources().getString(R.string.exception_message));
+        }
+    }
+
+}
+
 ```
 
 ### Implementing `OnFragmentInteractionListener`
 
-Now that we have set up our `SimpleListener` for communication. We need to implement the `OnFragmentInteractionListener` in the activity in order to receive data from fragment
+Now that we have set up our `RatingListener` for communication. We need to implement the `OnFragmentInteractionListener` in the activity in order to receive data from fragment
 
 ```java
 public class MainActivity extends AppCompatActivity
-        implements SimpleFragment.OnFragmentInteractionListener {
+        implements RatingFragment.OnFragmentInteractionListener {
 ```
 
-Add  a member variable in `MainActivity` for the choice the user makes with the radio buttons, and set it to the default value
+Add  a member variable in `MainActivity` for the choice the user makes with the `RatingBar`, and set it to the default value
 
 ```java
-private int mRadioButtonChoice = 2; // The default (no choice).
+private float mRatingChoice = 0; // The default (no choice).
+static final String STATE_CHOICE = "user_choice";
 ```
 
 ```java
 @Override
-public void onRadioButtonChoice(int choice) {
-    // Keep the radio button choice to pass it back to the fragment.
-    mRadioButtonChoice = choice;
-    Toast.makeText(this, "Choice is " + Integer.toString(choice),
-            Toast.LENGTH_SHORT).show();
+    public void onRatingChoice(float choice) {
+        mRatingChoice = choice;
+        Toast.makeText(this,"Choice is "+ Float.toString(choice),Toast.LENGTH_SHORT).show();
 }
+```
+
+Set up the `onSaveInstanceState(Bundle)` to save our float variable and states for the `Activity`
+
+```java
+@Override
+public void onSaveInstanceState(Bundle savedInstanceState){
+        savedInstanceState.putBoolean(STATE_FRAGMENT,isFragmentDisplayed);
+        savedInstanceState.putFloat(STATE_CHOICE, mRatingChoice);
+        super.onSaveInstanceState(savedInstanceState);
+    }
 ```
 
 The app should now show a toast when you click it.
 
-### Providing user's choice to fragment
+### Providing user's choice to fragment \(Main
 
  We have to now set a [`Bundle`](https://developer.android.com/reference/android/os/Bundle.html) and use the `Fragment.`[`setArguments(Bundle)`](https://developer.android.com/reference/android/app/Fragment.html#setArguments%28android.os.Bundle%29) method to supply the construction arguments for the `Fragment`.
 
@@ -105,50 +165,122 @@ A Bundle is like a key-value dictionary which allows to transfer information to 
 First, let's setup a `newInstance()` method to use a `Bundle` and `setArguments`
 
 ```java
-public static SimpleFragment newInstance(int choice) {
-        SimpleFragment fragment = new SimpleFragment();
+ public static RatingFragment newInstance(float choice) {
+        RatingFragment fragment = new RatingFragment();
         Bundle arguments = new Bundle();
-        arguments.putInt(CHOICE, choice);
+        arguments.putFloat(CHOICE, choice);
         fragment.setArguments(arguments);
         return fragment;
-}
+    }
 ```
 
 Add following code to `onCreateView()` method to retrieve the previously set value of choice
 
 ```java
 if (getArguments().containsKey(CHOICE)) {
-    // A choice was made, so get the choice.
-    mRadioButtonChoice = getArguments().getInt(CHOICE);
-    // Check the radio button choice.
-    if (mRadioButtonChoice != NONE) {
-        radioGroup.check
-                 (radioGroup.getChildAt(mRadioButtonChoice).getId());
-    }
-}
+            // A choice was made, so get the choice.
+            choice = getArguments().getFloat(CHOICE);
+            // Check the radio button choice.
+            if (choice!=0) {
+                rB.setRating(choice);
+            }
+        }
 ```
 
-Lastly, we need to change our functions to 
+Lastly, we need to change our functions in `MainActivity` to `RatingFragment.newInstance(mRatingChoice);`
 
-```text
+```java
 public void displayFragment(){
-    SimpleFragment simpleFragment = SimpleFragment.newInstance();
-    FragmentManager fragmentManager = getSupportFragmentManager();
-    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-    fragmentTransaction.add(R.id.fragment_container,simpleFragment).addToBackStack(null).commit();
-    sButtonl.setText(R.string.button_carClose);
-    isFragmentDisplayed = true;
-}
-public void closeFragment(){
-    FragmentManager fragmentManager = getSupportFragmentManager();
-    RatingFragment simpleFragment = (SimpleFragment)fragmentManager.findFragmentById(R.id.fragment_container);
-    if(ratingFragment!=null){
+        RatingFragment ratingFragment = RatingFragment.newInstance(mRatingChoice);
+        FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.remove(simpleFragment).addToBackStack(null).commit();
+        fragmentTransaction.add(R.id.fragment_container,ratingFragment).addToBackStack(null).commit();
+        sButtonl.setText(R.string.button_carClose);
+        isFragmentDisplayed = true;
     }
-    sButtonl.setText(R.string.button_car);
-    isFragmentDisplayed = false;
+    public void closeFragment(){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        RatingFragment ratingFragment = (RatingFragment)fragmentManager.findFragmentById(R.id.fragment_container);
+        if(ratingFragment!=null){
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.remove(ratingFragment).addToBackStack(null).commit();
+        }
+        sButtonl.setText(R.string.button_car);
+        isFragmentDisplayed = false;
 
+    }
+```
+
+
+
+Your app should be communicating the choice from the `Fragment` to the `Activity`, and then back to the `Fragment`which should display the choice you made previously always
+
+#### End Result:
+
+```java
+public class MainActivity extends AppCompatActivity implements RatingFragment.OnFragmentInteractionListener{
+    Button sButtonl;
+    private Boolean isFragmentDisplayed = false;
+    static final String STATE_FRAGMENT = "state_of_fragment";
+    private float mRatingChoice = 0;
+    static final String STATE_CHOICE = "user_choice";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        sButtonl = findViewById(R.id.button);
+        sButtonl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!isFragmentDisplayed){
+                    displayFragment();
+                }else{
+                    closeFragment();
+                }
+            }
+        });
+        if(savedInstanceState!=null){
+            isFragmentDisplayed = savedInstanceState.getBoolean(STATE_FRAGMENT);
+            mRatingChoice = savedInstanceState.getInt(STATE_CHOICE);
+        }
+
+    }
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState){
+        savedInstanceState.putBoolean(STATE_FRAGMENT,isFragmentDisplayed);
+        savedInstanceState.putFloat(STATE_CHOICE, mRatingChoice);
+        super.onSaveInstanceState(savedInstanceState);
+    }
+    public void displayFragment(){
+        RatingFragment ratingFragment = RatingFragment.newInstance(mRatingChoice);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.fragment_container,ratingFragment).addToBackStack(null).commit();
+        sButtonl.setText(R.string.button_carClose);
+        isFragmentDisplayed = true;
+    }
+    public void closeFragment(){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        RatingFragment ratingFragment = (RatingFragment)fragmentManager.findFragmentById(R.id.fragment_container);
+        if(ratingFragment!=null){
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.remove(ratingFragment).addToBackStack(null).commit();
+        }
+        sButtonl.setText(R.string.button_car);
+        isFragmentDisplayed = false;
+
+    }
+
+
+    @Override
+    public void onRatingChoice(float choice) {
+        mRatingChoice = choice;
+        Toast.makeText(this,"Choice is "+ Float.toString(choice),Toast.LENGTH_SHORT).show();
+    }
 }
 ```
+
+From this point, there are more complicated paths and communications you can perform, but these steps lay a foundation in using them.
 
