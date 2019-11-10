@@ -144,8 +144,19 @@ Use [`FragmentTransaction`](https://developer.android.com/reference/androidx/fra
 | **`attach(Fragment fragment)`** | The detached fragment can be re-attached by using this method. |
 | **`detach(Fragment fragment)`** | Detaches the given fragment from UI. Fragment state is still managed by `FragmentManager`. |
 | **`remove(Fragment fragment)`** | Removes the given fragment from UI and container. |
-| **`replace(int containerViewId, Fragment fragment)`** |  |
-| **commit\(\)** | For the given container view id, we can replace existing fragment by new given fragment. : Transaction is committed. |
+| **`replace(int containerViewId, Fragment fragment)`** | For the given container view id, we can replace existing fragment by new given fragment. |
+| **`commit()`** | Transaction is committed. |
+
+Fragment operations are wrapped into a transaction:
+
+* Start transaction with [`beginTransaction()`](https://developer.android.com/reference/android/app/FragmentManager.html#beginTransaction%28%29)\`\`
+* Do all Fragment operations \(`add`, `remove`, etc.\)
+* `addingtoBackStack(null)` saves transaction to the back stack so the user can reverse the transaction and bring back the previous fragment by pressing the Back button.
+* End transaction with [`commit()`](https://developer.android.com/reference/android/app/FragmentTransaction.html#commit%28%29)
+
+Alright, now we just need to add a `Button` and set up its `OnClickListener()` to our functions
+
+First, place the button in the `activity_main.xml` layout
 
 ```markup
 <Button
@@ -158,6 +169,8 @@ Use [`FragmentTransaction`](https://developer.android.com/reference/androidx/fra
     app:layout_constraintTop_toBottomOf="@id/article"
     />
 ```
+
+Now, find its view in the `MainActivity` and `setOnClickListener()`
 
 ```java
 Button sButtonl;
@@ -191,4 +204,6 @@ Button sButtonl;
     }
     
 ```
+
+And you should be able to build and run your app!
 
