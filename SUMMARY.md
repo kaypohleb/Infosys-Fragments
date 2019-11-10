@@ -1,11 +1,13 @@
 # Table of contents
 
 * [INFOSYS+](README.md)
-* [Contents](contents.md)
 
 ## Fragments
 
-* [Untitled](fragments/untitled.md)
+* [Introduction](fragments/untitled.md)
+* [App Demo](fragments/app-demo.md)
+* [Get Started](fragments/get-started.md)
+* [Communication](fragments/communication.md)
 
 ## Sensors
 
