@@ -12,5 +12,7 @@ The `Fragment` is skeletal, but it demonstrates how to create a `Fragment` to us
 
 ![](../.gitbook/assets/image%20%284%29.png)
 
+This Demo will you how to create a FragmentDemo which 
 
+![](../.gitbook/assets/image%20%286%29.png)
 
