@@ -45,22 +45,6 @@ This time, let's use a `RatingBar` instead of a `RadioGroup` with `RadioButtons`
 </LinearLayout>
 ```
 
-We are going to use a `<FrameLayout>` as a fragment container instead of a &lt;fragment&gt; 
-
-1.  Specify [`ViewGroup`](https://developer.android.com/reference/android/view/ViewGroup.html) for `Fragment` in layout
-
-```markup
-<FrameLayout
-    android:id="@+id/fragment_container"
-    android:name="com.example.fragmentdemo1.RatingFragment"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintRight_toRightOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/fragment"
-    tools:layout="@layout/fragment_rating" />
-```
-
 Now just as we did before, we can edit and place interactivity in our fragment right away.
 
 In this new fragment, we have a new function `newInstance()`. This allows us to instantiate the `Fragment` in the `MainActivity` later on.
@@ -91,9 +75,25 @@ In this new fragment, we have a new function `newInstance()`. This allows us to 
 Note:[`Toast`](https://developer.android.com/guide/topics/ui/notifiers/toasts) here displays simple messages in a small popup for a selected amount of time.
 {% endhint %}
 
-Great! Now all we need is to edit on the `MainActivity`  and `activity_main.xml`
+Great! Now all we need is to edit the rest on the `MainActivity`  and `activity_main.xml`
 
 ### Creating functions to display/hide Fragments
+
+We are going to use a `<FrameLayout>` as a fragment container instead of a &lt;fragment&gt; in `activity_main.xml`
+
+First, let's specify [`ViewGroup`](https://developer.android.com/reference/android/view/ViewGroup.html) for `Fragment` in layout
+
+```markup
+<FrameLayout
+    android:id="@+id/fragment_container"
+    android:name="com.example.fragmentdemo1.RatingFragment"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/fragment"
+    tools:layout="@layout/fragment_rating" />
+```
 
 Add the following code within the `MainActivity`class.
 
