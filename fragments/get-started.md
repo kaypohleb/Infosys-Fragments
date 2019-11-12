@@ -2,6 +2,35 @@
 
 Download source code here: [Link](https://github.com/kaypohleb/Infosys-Fragments)
 
+```markup
+<resources>
+    <string name="app_name">FragmentDemo1</string>
+
+    <!-- Placeholder text for this example. -->
+    <string name="title1">Hyundai 6000</string>
+    <string name="article1">The Hyundai Santa Fe is a sport utility vehicle (SUV) produced by the
+        South Korean manufacturer Hyundai since 2000.The Santa Fe was a milestone in the companys
+        restructuring program of the late 1990s because the SUV was a hit with American buyers.
+        The SUV was so popular that at times, Hyundai had trouble supplying the demand.</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="imageDes">carView</string>
+    <!-- Text for the fragment. -->
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="yes_message">ARTICLE: Like</string>
+    <string name="no_message">ARTICLE: Thanks</string>
+    <string name="question_car">LIKE THE CAR?</string>
+    <string name="rating_message">RATE IT</string>
+
+    <!-- Text for the button in FragmentExample2. -->
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+
+    <!-- Text for the exception message in FragmentCommunicate. -->
+    <string name="exception_message">must implement OnFragmentInteractionListener</string>
+</resources>
+```
+
 ### Creating a blank fragment
 
  1. Choose **File &gt; New &gt; Fragment &gt; Fragment \(Blank\)**.
