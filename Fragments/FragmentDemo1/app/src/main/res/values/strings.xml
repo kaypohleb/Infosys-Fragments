@@ -14,7 +14,8 @@
     <string name="no">No</string>
     <string name="yes_message">ARTICLE: Like</string>
     <string name="no_message">ARTICLE: Thanks</string>
-    <string name="question_article">LIKE THE CAR?</string>
+    <string name="question_car">LIKE THE CAR?</string>
+    <string name="rating_message">RATE IT</string>
 
     <!-- Text for the button in FragmentExample2. -->
     <string name="open">Open</string>
