@@ -103,7 +103,7 @@ Add the following code within the `MainActivity`class.
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.fragment_container,ratingFragment).addToBackStack(null).commit();
-        sButtonl.setText(R.string.button_carClose);
+        sButtonl.setText(R.string.close);
         isFragmentDisplayed = true;
     }
     public void closeFragment(){
@@ -113,7 +113,7 @@ Add the following code within the `MainActivity`class.
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.remove(ratingFragment).addToBackStack(null).commit();
         }
-        sButtonl.setText(R.string.button_car);
+        sButtonl.setText(R.string.open);
         isFragmentDisplayed = false;
 
     }
