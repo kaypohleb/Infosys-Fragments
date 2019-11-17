@@ -11,3 +11,10 @@
 * [LifeCycle](fragments/communication.md)
 * [Fragment Communication](fragments/fragment-communication.md)
 
+## Sensors and Query <a id="sensor-and-query"></a>
+
+* [Introductions](sensor-and-query/introductions.md)
+* [Get Started](sensor-and-query/get-started.md)
+* [Environmental Sensor](sensor-and-query/environmental-sensor.md)
+* [Orientation](sensor-and-query/orientation.md)
+
