@@ -231,8 +231,9 @@ public void onSensorChanged(SensorEvent event) {
 
 Run the app! The values should now update
 
-1. Add a new file called `spot.xml` to the project, in the `res/drawable` directory. \(Create the directory if needed.\)
-2. Replace the selector tag in `spot.xml` with an oval shape drawable whose color is solid black \(`"@android:color/black"`\)
+#### Direction Visualization using Pitch and Roll
+
+Create a circle shape
 
 ```markup
 <shape
@@ -389,16 +390,32 @@ mSpotLeft = (ImageView) findViewById(R.id.spot_left);
 mSpotRight = (ImageView) findViewById(R.id.spot_right);
 ```
 
-`onSensorChange()` : if the change is not enough, set it to 0
+`onSensorChange()` : if the change is not enough, set it to 0.
 
+Set up the alpha to 0 to prevent retaining old values.
 
-
-```text
+```java
 if (Math.abs(pitch) < 0.5f) {
     pitch = 0;
 }
 if (Math.abs(roll) < 0.5f) {
     roll = 0;
 }
+mSpotTop.setAlpha(0f);
+mSpotBottom.setAlpha(0f);
+mSpotLeft.setAlpha(0f);
+mSpotRight.setAlpha(0f);
+if (pitch > 0) {
+   mSpotBottom.setAlpha(pitch);
+} else {
+   mSpotTop.setAlpha(Math.abs(pitch));
+}
+if (roll > 0) {
+   mSpotLeft.setAlpha(roll);
+} else {
+   mSpotRight.setAlpha(Math.abs(roll));
+}
 ```
+
+  For the TiltSpot app you're only interested in displaying dots in response to _some_ device tilt, not the full range. This means that you can conveniently use the radian units directly as input to the alpha.
 
